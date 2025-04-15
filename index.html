@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAqua | IoT Fish Farming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a5276;
+            --secondary-color: #21618c;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #f8f9fa;
+            --nav-bg: #1a5276;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --bg-color: #2c2c2c;
+            --text-color: #ffffff;
+            --card-bg: #3d3d3d;
+            --nav-bg: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--nav-bg);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('aqua-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            color: white;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Slideshow Section */
+        .slideshow-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .mySlides {
+            display: none;
+            position: relative;
+        }
+
+        .mySlides img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .next {
+            right: 0;
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Purchase Section */
+        .product-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .quantity-selector input {
+            padding: 0.8rem;
+            width: 100px;
+            text-align: center;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            margin: 1rem 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* FAQ Section */
+        .faq-item {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+            padding: 1rem 0;
+        }
+
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: none;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--nav-bg);
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .mySlides img {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="logo.png" alt="SmartAqua Logo">
+        </div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#products">Products</a>
+            <a href="#buy">Buy</a>
+            <a href="https://thingspeak.com" target="_blank">Farm Status</a>
+            <a href="#contact">Contact</a>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Smart Aquafarming Solutions</h1>
+            <p>IoT-powered fish farming management system with real-time monitoring and AI analytics</p>
+            <div style="margin-top: 2rem;">
+                <button onclick="location.href='#features'" class="btn">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <h2 class="section-title">Key Features</h2>
+        <div class="grid-container">
+            <div class="feature-card">
+                <i class="fas fa-water"></i>
+                <h3>Water Quality Monitoring</h3>
+                <p>Real-time tracking of temperature, pH, turbidity, and TDS levels</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-robot"></i>
+                <h3>AI Disease Detection</h3>
+                <p>Early detection of fish diseases using machine learning algorithms</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-fan"></i>
+                <h3>Automated Control</h3>
+                <p>Smart control of feeding, aeration, and water circulation</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Slideshow -->
+    <section id="products">
+        <h2 class="section-title">Our Products</h2>
+        <div class="slideshow-container">
+            <div class="mySlides fade">
+                <img src="product1.jpg" alt="Smart Sensor Kit">
+                <div class="slide-caption">
+                    <h3>Smart Sensor Package</h3>
+                    <p>Complete water quality monitoring solution</p>
+                </div>
+            </div>
+            <div class="mySlides fade">
+                <img src="product2.jpg" alt="Control System">
+                <div class="slide-caption">
+                    <h3>Automation Controller</h3>
+                    <p>Central control unit for all farm operations</p>
+                </div>
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+        </div>
+    </section>
+
+    <!-- Purchase Section -->
+    <section id="buy">
+        <div class="product-form">
+            <h2>Purchase Smart Farming Kit</h2>
+            <div class="quantity-selector">
+                <input type="number" min="1" value="1" id="quantity">
+            </div>
+            <button onclick="handlePurchase()">Purchase Now</button>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq">
+        <h2 class="section-title">FAQ</h2>
+        <div class="faq-item">
+            <h3>How often is water quality monitored?</h3>
+            <p>Our system provides continuous monitoring with updates every 15 minutes</p>
+        </div>
+        <div class="faq-item">
+            <h3>What sensors are included?</h3>
+            <p>Temperature, pH, turbidity, and TDS sensors with optional add-ons</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="contact-form">
+            <h2 class="section-title">Contact Us</h2>
+            <form id="contactForm">
+                <input type="text" placeholder="Name" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2023 SmartAqua. All rights reserved</p>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        function toggleTheme() {
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            updateThemeIcon(isDark);
+        }
+
+        function updateThemeIcon(isDark) {
+            const icon = themeToggle.querySelector('i');
+            icon.classList.toggle('fa-moon', !isDark);
+            icon.classList.toggle('fa-sun', isDark);
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme === 'dark');
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Slideshow Logic
+        let slideIndex = 0;
+        let slideInterval;
+
+        function showSlides() {
+            const slides = document.getElementsByClassName("mySlides");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) slideIndex = 1;
+            slides[slideIndex-1].style.display = "block";
+            slideInterval = setTimeout(showSlides, 5000);
+        }
+
+        function plusSlides(n) {
+            clearTimeout(slideInterval);
+            slideIndex += n;
+            const slides = document.getElementsByClassName("mySlides");
+            if (slideIndex > slides.length) slideIndex = 1;
+            if (slideIndex < 1) slideIndex = slides.length;
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slides[slideIndex-1].style.display = "block";
+            slideInterval = setTimeout(showSlides, 5000);
+        }
+
+        // Initialize slideshow
+        showSlides();
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Purchase handling
+        function handlePurchase() {
+            const quantity = document.getElementById('quantity').value;
+            alert(`Added ${quantity} kit(s) to your order!`);
+        }
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll respond within 24 hours.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
